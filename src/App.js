@@ -13,6 +13,10 @@ class App extends Component {
       {
         name: 'Nic',
         isConfirmed: true
+      },
+      {
+        name: 'Sam',
+        isConfirmed: true
       }
     ]
   }
