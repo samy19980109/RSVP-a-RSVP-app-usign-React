@@ -14,7 +14,7 @@ const MainContent = props =>
         <Counter 
             totalInvited={props.totalInvited}
             numberAttending={props.numberAttending}
-            numberUnconfirmed={props.numnberUnconfirmed}
+            numberUnconfirmed={props.numberUnconfirmed}
         />
         <GuestList 
           guests={props.guests} 
