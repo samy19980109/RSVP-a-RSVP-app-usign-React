@@ -19,14 +19,19 @@ class App extends Component {
       {
         name: 'Sam',
         isConfirmed: true,
-        isEditing: true
+        isEditing: false
       }
     ],
-    isFiltered: false
+    isFiltered: false,
+    pendingGuests: ""
   }
 
   toggleFilter = () => 
     this.setState({isFiltered: !this.state.isFiltered });
+
+  handleNameInput = (e) => 
+    this.setState({ pendingGuests: e.target.value });
+
 
   getTotalInvited = () => this.state.guests.length;
 
@@ -59,9 +64,32 @@ class App extends Component {
   toggleConfirmationAt = (index) => 
      this.toggleGuestPropertyAt("isConfirmed", index);
 
+  removeGuestAt = (index) =>
+  this.setState({
+    guests: [
+      ...this.state.guests.slice(0, index),
+      ...this.state.guests.slice(index+1)
+    ]
+  });
+
   toggleEditingAt = (index) => 
      this.toggleGuestPropertyAt("isEditing", index);
   
+  newGuestSubmitHandler = (e) => {
+    e.preventDefault();
+    const newplayer = {
+      name: this.state.pendingGuests,
+      isConfirmed: false,
+      isEditing: false
+    };
+    this.setState( { 
+      guests: [
+        newplayer,
+        ...this.state.guests
+      ],
+      pendingGuests: ""
+     });
+  }
 
   // getAttendingGuests = () =>
   // get UnconfirmedGuests = () =>
@@ -72,9 +100,16 @@ class App extends Component {
         <header>
           <h1>RSVP</h1>
           <p>A Treehouse App</p>
-          <form>
-              <input type="text" value="Safia" placeholder="Invite Someone" />
-              <button type="submit" name="submit" value="submit">Submit</button>
+          <form onSubmit={this.newGuestSubmitHandler}>
+              <input 
+              type="text" 
+              onChange={this.handleNameInput}
+              value={this.state.pendingGuests}
+              placeholder="Invite Someone" />
+              <button 
+              type="submit" 
+              name="submit" 
+              value="submit">Submit</button>
           </form>
         </header>
         <div className="main">
@@ -111,6 +146,7 @@ class App extends Component {
           toggleEditingAt={this.toggleEditingAt}
           setNameAt={this.setNameAt}
           isFiltered={this.state.isFiltered}
+          removeGuestAt={this.removeGuestAt}
           />
         </div>
     </div>
