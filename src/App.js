@@ -9,32 +9,58 @@ class App extends Component {
       {
         name: 'Treasure',
         isConfirmed: false,
+        isEditing: false    
       },
       {
         name: 'Nic',
-        isConfirmed: true
+        isConfirmed: true,
+        isEditing: false
       },
       {
         name: 'Sam',
-        isConfirmed: true
+        isConfirmed: true,
+        isEditing: true
       }
-    ]
+    ],
+    isFiltered: false
   }
+
+  toggleFilter = () => 
+    this.setState({isFiltered: !this.state.isFiltered });
 
   getTotalInvited = () => this.state.guests.length;
 
-  toggleConfirmationAt = (indexToChange) => 
+  toggleGuestPropertyAt = (property, indexToChange) => 
     this.setState({ 
       guests: this.state.guests.map((guest, index) => {
-        if (index == indexToChange) {
+        if (index === indexToChange) {
           return {
             ...guest,
-            isConfirmed: !guest.isConfirmed
+            [property]: !guest[property]
           };
         }
         return guest;
       })
      });
+
+  setNameAt = (name, indexToChange) => 
+    this.setState({ 
+      guests: this.state.guests.map((guest, index) => {
+        if (index === indexToChange) {
+          return {
+            ...guest,
+            name: name
+          };
+        }
+        return guest;
+      })
+    });
+ 
+  toggleConfirmationAt = (index) => 
+     this.toggleGuestPropertyAt("isConfirmed", index);
+
+  toggleEditingAt = (index) => 
+     this.toggleGuestPropertyAt("isEditing", index);
   
 
   // getAttendingGuests = () =>
@@ -55,7 +81,11 @@ class App extends Component {
           <div>
             <h2>Invitees</h2>
             <label>
-              <input type="checkbox"/> Hide those who haven't responded
+              <input 
+              type="checkbox" 
+              onChange={this.toggleFilter}
+              checked={this.state.isFiltered}
+              /> Hide those who haven't responded
             </label>
           </div>
           <table className="counter">
@@ -75,7 +105,13 @@ class App extends Component {
             </tbody>
           </table>
          
-          <GuestList guests={this.state.guests} toggleConfirmationAt={this.toggleConfirmationAt}/>
+          <GuestList 
+          guests={this.state.guests} 
+          toggleConfirmationAt={this.toggleConfirmationAt}
+          toggleEditingAt={this.toggleEditingAt}
+          setNameAt={this.setNameAt}
+          isFiltered={this.state.isFiltered}
+          />
         </div>
     </div>
     );
