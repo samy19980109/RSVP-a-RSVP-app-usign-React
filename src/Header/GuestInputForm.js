@@ -6,7 +6,7 @@ const GuestInputForm = props =>
         <input 
         type="text" 
         onChange={props.handleNameInput}
-        value={props.pendingGuests}
+        value={props.pendingGuest}
         placeholder="Invite Someone" />
         <button 
         type="submit" 
